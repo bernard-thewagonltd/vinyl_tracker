@@ -1,17 +1,17 @@
 from models import Vinyl
 from datetime import datetime
 from storage_json import save_collection
-from utils import clear_screen
+from utils import clear_screen, get_valid_year, get_valid_trackcount, get_valid_string
 
 def add_vinyl(collection, username):
     # Add a new vinyl record
     print("\n=== Add New Vinyl ===")
-    artist = input("Artist: ").strip()
-    album = input("Album: ").strip()
-    year = input("Year: ").strip()
-    genre = input("Genre: ").strip()
-    barcode = input("Barcode: ").strip()
-    trackcount = input("Number of tracks: ").strip()
+    artist = get_valid_string("Artist: ", "Artist")
+    album = get_valid_string("Album: ", "Album")
+    year = get_valid_year("Year: ")
+    genre = get_valid_string("Genre: ", "Genre")
+    barcode = input("Barcode: ").strip()  # Optional, no validation for now
+    trackcount = get_valid_trackcount("Number of tracks: ")
     dateadded = datetime.today().strftime("%Y-%m-%d")  # ISO format
 
     vinyl = Vinyl(
@@ -20,7 +20,7 @@ def add_vinyl(collection, username):
         year=year,
         genre=genre,
         barcode=barcode,
-        trackcount=int(trackcount),
+        trackcount=trackcount,  # Already an int from validation
         dateadded=dateadded,
         username=username
     )
@@ -94,14 +94,12 @@ def edit_vinyl(vinyl):
     print("\n=== Edit Vinyl ===")
     print("Leave blank to keep current value.\n")
 
-    vinyl.artist = input(f"Artist [{vinyl.artist.title()}]: ") or vinyl.artist
-    vinyl.album = input(f"Album [{vinyl.album.title()}]: ") or vinyl.album
-    vinyl.year = input(f"Year [{vinyl.year}]: ") or vinyl.year
-    vinyl.genre = input(f"Genre [{vinyl.genre.title()}]: ") or vinyl.genre
-    vinyl.barcode = input(f"Barcode [{vinyl.barcode}]: ") or vinyl.barcode
-    trackcount = input(f"Tracks [{vinyl.trackcount}]: ")
-    if trackcount:
-        vinyl.trackcount = int(trackcount)
+    vinyl.artist = get_valid_string("Artist ", "Artist", current_value=vinyl.artist)
+    vinyl.album = get_valid_string("Album ", "Album", current_value=vinyl.album)
+    vinyl.year = get_valid_year("Year ", current_value=vinyl.year)
+    vinyl.genre = get_valid_string("Genre ", "Genre", current_value=vinyl.genre)
+    vinyl.barcode = input(f"Barcode [{vinyl.barcode}]: ").strip() or vinyl.barcode
+    vinyl.trackcount = get_valid_trackcount("Tracks ", current_value=vinyl.trackcount)
 
     print("\nRecord updated.")
 
