@@ -3,6 +3,8 @@
 ### by: Bernard Borg, 
 #### Submitted in partial fulfillment to Codecademy Computer Science Track - Portfolio Project: Python Terminal Utility
 
+[Vinyl Tracker GitHub Repository](https://github.com/bernard-thewagonltd/vinyl_tracker)
+
 ---
 ### Summary
 
